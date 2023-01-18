@@ -10,37 +10,40 @@ module.exports = (sequelize) => {
   //   },
   // });
 
-  sequelize.define('pokemon', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+  sequelize.define(
+    'pokemon',
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      life: {
+        type: DataTypes.INTEGER,
+      },
+      attack: {
+        type: DataTypes.INTEGER,
+      },
+      defense: {
+        type: DataTypes.INTEGER,
+      },
+      speed: {
+        type: DataTypes.INTEGER,
+      },
+      height: {
+        type: DataTypes.FLOAT,
+      },
+      weight: {
+        type: DataTypes.FLOAT,
+      },
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    life: {
-      type: DataTypes.INTEGER,
-    },
-    attack: {
-      type: DataTypes.INTEGER,
-    },
-    defense: {
-      type: DataTypes.INTEGER,
-    },
-    speed: {
-      type: DataTypes.INTEGER,
-    },
-    height: {
-      type: DataTypes.FLOAT,
-    },
-    weight: {
-      type: DataTypes.FLOAT,
-    },
-  });
-
-  
-
-  
+    {
+      timestamps: false,
+    }
+  );
 };
