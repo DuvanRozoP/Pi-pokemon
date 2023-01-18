@@ -1,28 +1,50 @@
-const { getPokemonById, createPokemon } = require('./Pokemons.store');
+const {
+  getPokemonByIdStore,
+  getPokemonsByIdDbStore,
+  getPokemonAllStore,
+  getPokemonByParamsStore,
+  createPokemonStore,
+} = require('./Pokemons.store');
+const { isEmpty, isNumber } = require('../../Helpers/helpers');
 
-exports.getPokemonById = async (id) => {
+const getPokemonAll = async (name) => {
   try {
-    const pokemon = await getPokemonById(id);
-    return pokemon;
+    isEmpty(name);
+    if (name) return await getPokemonByParamsStore(name);
+    else return await getPokemonAllStore();
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-exports.postPokemonDb = async (data) => {
+const getPokemonById = async (id) => {
   try {
-    if (Object.values(data).length <= 0) throw new Error('Data Invalid');
+    isEmpty(id);
+    const idPokemon = id.replace('S', '');
+    isNumber(idPokemon);
 
-    const { name } = data;
-    if (name.length <= 0) throw new Error('Invalid Name');
+    if (id.includes('S')) return await getPokemonsByIdDbStore(Number(idPokemon));
+    else return await getPokemonByIdStore(Number(idPokemon));
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
-    const validarNumber = Object.values(data).slice(1);
-    for (const value of validarNumber)
-      if (typeof value !== 'number') throw new Error(`Invalid ${value} number`);
+const postPokemonDb = async (data) => {
+  try {
+    const { name, nameType, life, attack, defense, speed, height, weight } = data;
+    isEmpty(name, nameType);
+    isNumber(life, attack, defense, speed, height, weight);
 
-    const pokemon = await createPokemon(data);
+    const pokemon = await createPokemonStore(data);
     return `the pokemon ${pokemon.name} has been created successfully`;
   } catch (error) {
     throw new Error(error.message);
   }
+};
+
+module.exports = {
+  getPokemonAll,
+  getPokemonById,
+  postPokemonDb,
 };
